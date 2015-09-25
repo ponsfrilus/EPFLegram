@@ -1,0 +1,9 @@
+[Unit]
+Description=EPFLegram
+
+[Service]
+ExecStart=/usr/bin/docker run -e "TELEGRAM_BOT_TOKEN=XXXXXXXXXX" --name='EPFLegram'  epflsti/epflegram
+ExecStop=/usr/bin/docker kill EPFLegram
+
+[X-Fleet]
+X-Conflicts=EPFLegram.service

@@ -1,0 +1,84 @@
+{
+  "name": "node-telegram-bot-api",
+  "version": "0.12.1",
+  "description": "Telegram Bot API",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "keywords": [
+    "telegram",
+    "telegram bot",
+    "telegram bot api",
+    "bot"
+  ],
+  "scripts": {
+    "start": "node index.js",
+    "test": "./node_modules/.bin/mocha test/index.js",
+    "test-cov": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "author": "Yago Pérez <yagoperezs@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.30",
+    "debug": "^2.2.0",
+    "feedparser": "^1.1.3",
+    "iconv": "^2.1.10",
+    "mime": "^1.3.4",
+    "request": "^2.58.0"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2",
+    "should": "^7.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yagop/node-telegram-bot-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yagop/node-telegram-bot-api/issues"
+  },
+  "homepage": "https://github.com/yagop/node-telegram-bot-api",
+  "contributors": [
+    {
+      "name": "Yago",
+      "email": "yago@yago.me",
+      "url": "https://github.com/yagop",
+      "contributions": 89,
+      "additions": 1598,
+      "deletions": 435,
+      "hireable": true
+    },
+    {
+      "name": "Sebastian Troć",
+      "email": "sebastian.troc@gucman.pl",
+      "url": "https://github.com/SebastianTroc",
+      "contributions": 1,
+      "additions": 1,
+      "deletions": 1,
+      "hireable": false
+    },
+    {
+      "name": "Riddler",
+      "email": "",
+      "url": "https://github.com/Waterloo",
+      "contributions": 3,
+      "additions": 64,
+      "deletions": 2,
+      "hireable": true
+    },
+    {
+      "name": "Ilias Ismanalijev",
+      "email": "hello@illyism.com",
+      "url": "https://github.com/Illyism",
+      "contributions": 7,
+      "additions": 140,
+      "deletions": 10,
+      "hireable": true
+    }
+  ]
+}
