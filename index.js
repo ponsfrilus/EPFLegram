@@ -21,8 +21,6 @@ var restaurantOpts = {
 
 // THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
 // console.log(process.env['HOME']);
-
-//var token = process.env.TELEGRAM_BOT_TOKEN || '138364390:AAHQ5i0Q76lksDJo1j3679iJOzmOSJS42CA';
 var token = process.env.TELEGRAM_BOT_TOKEN || 'SETYOURKEYHERE';
 
 var bot = new TelegramBot(token, options);
@@ -36,6 +34,7 @@ bot.on('text', function (msg) {
 
     switch (args[0]) {
         case '/sciper':
+            console.log(msg.from.username+" ask for "+args[0]);
             if (typeof args[1] === 'undefined') {
                 bot.sendMessage(chatId, 'Please specify the sciper number, e.g. /sciper 169419');
             }
@@ -49,6 +48,7 @@ bot.on('text', function (msg) {
             }
             break;
         case '/getimg':
+            console.log(msg.from.username+" ask for "+args[0]);
             //debug(args[1]);
             if (typeof args[1] === 'undefined') {
                 bot.sendMessage(chatId, 'Please specify the sciper number, e.g. /sciper 169419');
@@ -59,6 +59,7 @@ bot.on('text', function (msg) {
                 //debug('Please provide a valid sciper number !');
                 bot.sendMessage(chatId, 'Please specify a valid sciper number, e.g. /sciper 169419');
             } else {
+                console.log(msg.from.username+" ask for "+args[0]+" "+args[1]);
                 //debug('sciper is defined');
                 bot.sendMessage(chatId, '⌛ Getting image for '+ sciper);
 
@@ -81,6 +82,7 @@ bot.on('text', function (msg) {
             }
             break;
         case '/menu':
+            console.log(msg.from.username+" ask for "+args[0]);
             // To limit the list, only (my) common restaurant are listed
             // in the same time a "roulottes" menu can be done
             // Full list:
@@ -117,6 +119,7 @@ bot.on('text', function (msg) {
             break;
         case 'Parmentier':
         case '/menu Parmentier':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# Parmentier\n";
                 for (var plats in menu['Le Parmentier']) {
@@ -127,6 +130,7 @@ bot.on('text', function (msg) {
             break;
         case 'BC':
         case '/menu BC':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# Cafétéria BC\n";
                 for (var plats in menu['Cafétéria BC']) {
@@ -137,6 +141,7 @@ bot.on('text', function (msg) {
             break;
         case 'Atlantide':
         case '/menu Atlantide':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# L'Atlantide\n";
                 for (var plats in menu["L'Atlantide"]) {
@@ -147,6 +152,7 @@ bot.on('text', function (msg) {
             break;
         case 'Corbusier':
         case '/menu Corbusier':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# Le Corbusier\n";
                 for (var plats in menu['Le Corbusier']) {
@@ -157,6 +163,7 @@ bot.on('text', function (msg) {
             break;
         case 'Vinci':
         case '/menu Vinci':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# Le Vinci\n";
                 for (var plats in menu['Le Vinci']) {
@@ -166,6 +173,7 @@ bot.on('text', function (msg) {
             });
             break;
         case '/menuAll':
+            console.log(msg.from.username+" ask for "+args[0]);
             getMenuAsync(function (menu) {
                 for (var restaurant in menu) {
                     // All menus are too long for telegram, set a msg / restaurant
@@ -179,26 +187,31 @@ bot.on('text', function (msg) {
             });
             break;
         case '/audio':
+            console.log(msg.from.username+" ask for "+args[0]);
             var url = 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg';
             // From HTTP request!
             var audio = request(url);
             bot.sendAudio(chatId, audio);
             break;
         case '/pic':
+            console.log(msg.from.username+" ask for "+args[0]);
             var photo = __dirname+'/../test/bot.gif';
             bot.sendPhoto(chatId, photo, {caption: "I'm a cool bot!"});
             break;
         case '/cat':
+            console.log(msg.from.username+" ask for "+args[0]);
             // var url = 'http://www.catgifpage.com/gifs/266.gif';
             // var cat = request(url);
             bot.sendDocument(chatId, request('http://www.catgifpage.com/gifs/266.gif'), {caption: "I'm a [LOL] cat!"});
             break;
         case '/start':
+            console.log(msg.from.username+" ask for "+args[0]);
             bot.sendMessage(chatId, 'Welcome 😎! Please have fun!\nAs starter, try the /help command...!');
             break;
         case 'help':
         case '/help':
         default:
+            console.log(msg.from.username+" ask for "+args[0]);
             var usage = 'Usage:\n' +
                 '\t\t- /help This output\n' +
                 '\t\t- /menu\n' +
@@ -214,6 +227,7 @@ bot.on('text', function (msg) {
             break;
     }
     if (msg.text == '/test') {
+        console.log(msg.from.username+" ask for "+args[0]);
         var download = function (uri, filename, callback) {
             request.head(uri, function (err, res, body) {
                 console.log('content-type:', res.headers['content-type']);
