@@ -2,6 +2,8 @@
 Description=EPFLegram
 
 [Service]
+ExecStartPre=/usr/bin/docker pull epflsti/epflegram
+ExecStartPre=/bin/sh -c '/usr/bin/docker rm -f EPFLegram || true'
 ExecStart=/usr/bin/docker run -e "TELEGRAM_BOT_TOKEN=XXXXXXXXXX" --name='EPFLegram'  epflsti/epflegram
 ExecStop=/usr/bin/docker kill EPFLegram
 
