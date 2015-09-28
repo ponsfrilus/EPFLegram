@@ -1,3 +1,5 @@
+// TODO: Check if menu entry exist before parsing them
+
 //module.exports = require('./src/telegram');
 var getMenuAsync = require('./src/epfl-menu');
 var TelegramBot = require('./src/telegram');
@@ -153,6 +155,7 @@ bot.on('text', function (msg) {
                 bot.sendMessage(chatId, shortMenuEntry, restaurantOpts);
             });
             break;
+        case 'Vinci':
         case '/menu Vinci':
             getMenuAsync(function (menu) {
                 var shortMenuEntry = "\n\n# Le Vinci\n";
