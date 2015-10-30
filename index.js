@@ -12,7 +12,7 @@ var options = {
 };
 // THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
 // console.log(process.env['HOME']);
-var token = process.env.TELEGRAM_BOT_TOKEN || '138364390:AAHQ5i0Q76lksDJo1j3679iJOzmOSJS42CA';
+var token = process.env.TELEGRAM_BOT_TOKEN || 'SET_YOUR_KEY';
 var bot = new TelegramBot(token, options);
 
 var restaurantOpts = {
@@ -230,7 +230,7 @@ bot.on('text', function (msg) {
             console.log(msg.from.username+" ask for "+args[0]);
             bot.sendMessage(chatId, 'Welcome 😎! Please have fun!\nAs starter, try the /help command...!');
             break;
-        
+
         // METRO
         case '/next':
         case '/metro':
