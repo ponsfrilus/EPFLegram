@@ -191,7 +191,7 @@ bot.on('text', function (msg) {
             break;
         case '/pic':
             console.log(msg.from.username+" ask for "+args[0]);
-            var photo = __dirname+'/../test/bot.gif';
+            var photo = __dirname+'/../media/bot.gif';
             bot.sendPhoto(chatId, photo, {caption: "I'm a cool bot!"});
             break;
         case '/cat':
