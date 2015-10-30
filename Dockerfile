@@ -5,7 +5,6 @@ FROM node:4.1.1
 MAINTAINER Nicolas Borboën <nicolas.borboen@epfl.ch>
 
 # Bundle app source
-COPY ./src/ /app/epflegram/src/
 COPY ./index.js /app/epflegram/index.js
 COPY ./package.json /app/epflegram/package.json
 
