@@ -63,5 +63,10 @@ fleetctl start EPFLegram.service
 * /leave in 20  
     Send a notification 5 minutes before the metro who leave in around 20 minutes.
 
+## BotFather
+* /setcommands  
+  /menu - Choose between Parmentier, BC, Atlantide, Corbusier or Vinci menus  
+  /menuAll - All EPFL menus  
+
 ## ToDo
 * Tests

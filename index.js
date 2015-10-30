@@ -1,8 +1,5 @@
-// TODO: Check if menu entry exist before parsing them
-
-//module.exports = require('./src/telegram');
-var getMenuAsync = require('./src/epfl-menu');
-var TelegramBot = require('./src/telegram');
+var TelegramBot = require('node-telegram-bot-api');
+var getMenuAsync = require('./epfl-menu.js');
 var request = require('request');
 var stream = require('stream');
 var http = require("http");
@@ -12,18 +9,17 @@ var fs = require('fs');
 var options = {
     polling: true
 };
+// THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
+// console.log(process.env['HOME']);
+var token = process.env.TELEGRAM_BOT_TOKEN || 'SETYOURKEYHERE';
+var bot = new TelegramBot(token, options);
+
 var restaurantOpts = {
     reply_markup: JSON.stringify({
         keyboard: [['/menu']],
         "one_time_keyboard": true
     })
 };
-
-// THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
-// console.log(process.env['HOME']);
-var token = process.env.TELEGRAM_BOT_TOKEN || 'SETYOURKEYHERE';
-
-var bot = new TelegramBot(token, options);
 
 bot.getMe().then(function (me) {
     console.log('Hello on %s! Please have fun!', me.username);
