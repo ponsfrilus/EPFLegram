@@ -263,6 +263,8 @@ bot.on('text', function (msg) {
                 '\t\t- /menuAll\n' +
                 '\t\t- /getimg 123345\n' +
                 '\t\t- /sciper 123456\n\n' +
+                'Metro:\n' +
+                '\t\t- /next\n' +
                 'Test:\n' +
                 '\t\t- /cat\n' +
                 '\t\t- /pic\n' +
