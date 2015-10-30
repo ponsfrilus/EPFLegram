@@ -1,5 +1,6 @@
 var TelegramBot = require('node-telegram-bot-api');
 var getMenuAsync = require('./epfl-menu.js');
+var moment = require('moment');
 var request = require('request');
 var stream = require('stream');
 var http = require("http");
@@ -11,7 +12,7 @@ var options = {
 };
 // THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
 // console.log(process.env['HOME']);
-var token = process.env.TELEGRAM_BOT_TOKEN || 'SETYOURKEYHERE';
+var token = process.env.TELEGRAM_BOT_TOKEN || '138364390:AAHQ5i0Q76lksDJo1j3679iJOzmOSJS42CA';
 var bot = new TelegramBot(token, options);
 
 var restaurantOpts = {
@@ -21,25 +22,6 @@ var restaurantOpts = {
     })
 };
 
-function sendTimeTables(url, msg){
-    request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var opts = {
-                reply_to_message_id: msg.message_id
-            };
-
-            var result = JSON.parse(body);
-            var message2send = '';
-            for (var i = 1; i <= 4; i++) {
-                var nextMetro = result.connections[i - 1].from.departure;
-                message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
-            }
-            bot.sendMessage(msg.chat.id, message2send, opts);
-        } else {
-            bot.sendMessage(msg.chat.id, 'Error getting timetable', opts);
-        }
-    })
-};
 
 bot.getMe().then(function (me) {
     console.log('Hello on %s! Please have fun!', me.username);
@@ -47,6 +29,30 @@ bot.getMe().then(function (me) {
 bot.on('text', function (msg) {
     var chatId = msg.chat.id;
     var args = msg.text.split(' ');
+
+    function sendTimeTables(url, msg){
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var opts = {
+                    reply_to_message_id: msg.message_id
+                };
+
+                var result = JSON.parse(body);
+                console.log(result);
+                var message2send = '';
+                for (var i = 1; i <= 4; i++) {
+                    bot.sendMessage(msg.chat.id, message2send, opts);
+
+                    var nextMetro = result.connections[i - 1].from.departure;
+                    message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
+                }
+                console.log(message2send);
+                bot.sendMessage(msg.chat.id, message2send, opts);
+            } else {
+                bot.sendMessage(msg.chat.id, 'Error getting timetable', opts);
+            }
+        })
+    };
 
     switch (args[0]) {
         case '/sciper':
@@ -227,30 +233,31 @@ bot.on('text', function (msg) {
         
         // METRO
         case '/next':
+        case '/metro':
             var opts = {
                 reply_to_message_id: msg.message_id,
                 reply_markup: JSON.stringify({
                     keyboard: [
-                        ['Metro from EPFL to Lausanne'],
-                        ['Metro from Lausanne to EPFL'],
-                        ['Metro from EPFL to Renens'],
-                        ['Metro from Renens to EPFL']],
+                        ['Metro_from_EPFL_to_Lausanne'],
+                        ['Metro_from_Lausanne_to_EPFL'],
+                        ['Metro_from_EPFL_to_Renens'],
+                        ['Metro_from_Renens_to_EPFL']],
                     one_time_keyboard: true
                 }),
                 ForceReply: true
             };
             bot.sendMessage(chatId, 'Where do you want to go?', opts);
             break;
-        case 'Metro from EPFL to Lausanne':
+        case 'Metro_from_EPFL_to_Lausanne':
             sendTimeTables('http://transport.opendata.ch/v1/connections?from=EPFL&to=Lausanne', msg);
             break;
-        case 'Metro from Lausanne to EPFL':
+        case 'Metro_from_Lausanne_to_EPFL':
             sendTimeTables('http://transport.opendata.ch/v1/connections?from=Lausanne&to=EPFL', msg);
             break;
-        case 'Metro from EPFL to Renens':
+        case 'Metro_from_EPFL_to_Renens':
             sendTimeTables('http://transport.opendata.ch/v1/connections?from=EPFL&to=Renens', msg);
             break;
-        case 'Metro from Renens to EPFL':
+        case 'Metro_from_Renens_to_EPFL':
             sendTimeTables('http://transport.opendata.ch/v1/connections?from=Renens&to=EPFL', msg);
             break;
         case 'help':
@@ -264,7 +271,8 @@ bot.on('text', function (msg) {
                 '\t\t- /getimg 123345\n' +
                 '\t\t- /sciper 123456\n\n' +
                 'Metro:\n' +
-                '\t\t- /next\n' +
+                '\t\t- /metro\n' +
+                '\t\t- /next\n\n' +
                 'Test:\n' +
                 '\t\t- /cat\n' +
                 '\t\t- /pic\n' +
