@@ -21,6 +21,26 @@ var restaurantOpts = {
     })
 };
 
+function sendTimeTables(url, msg){
+    request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var opts = {
+                reply_to_message_id: msg.message_id
+            };
+
+            var result = JSON.parse(body);
+            var message2send = '';
+            for (var i = 1; i <= 4; i++) {
+                var nextMetro = result.connections[i - 1].from.departure;
+                message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
+            }
+            bot.sendMessage(msg.chat.id, message2send, opts);
+        } else {
+            bot.sendMessage(msg.chat.id, 'Error getting timetable', opts);
+        }
+    })
+};
+
 bot.getMe().then(function (me) {
     console.log('Hello on %s! Please have fun!', me.username);
 });
@@ -203,6 +223,35 @@ bot.on('text', function (msg) {
         case '/start':
             console.log(msg.from.username+" ask for "+args[0]);
             bot.sendMessage(chatId, 'Welcome 😎! Please have fun!\nAs starter, try the /help command...!');
+            break;
+        
+        // METRO
+        case '/next':
+            var opts = {
+                reply_to_message_id: msg.message_id,
+                reply_markup: JSON.stringify({
+                    keyboard: [
+                        ['Metro from EPFL to Lausanne'],
+                        ['Metro from Lausanne to EPFL'],
+                        ['Metro from EPFL to Renens'],
+                        ['Metro from Renens to EPFL']],
+                    one_time_keyboard: true
+                }),
+                ForceReply: true
+            };
+            bot.sendMessage(chatId, 'Where do you want to go?', opts);
+            break;
+        case 'Metro from EPFL to Lausanne':
+            sendTimeTables('http://transport.opendata.ch/v1/connections?from=EPFL&to=Lausanne', msg);
+            break;
+        case 'Metro from Lausanne to EPFL':
+            sendTimeTables('http://transport.opendata.ch/v1/connections?from=Lausanne&to=EPFL', msg);
+            break;
+        case 'Metro from EPFL to Renens':
+            sendTimeTables('http://transport.opendata.ch/v1/connections?from=EPFL&to=Renens', msg);
+            break;
+        case 'Metro from Renens to EPFL':
+            sendTimeTables('http://transport.opendata.ch/v1/connections?from=Renens&to=EPFL', msg);
             break;
         case 'help':
         case '/help':
