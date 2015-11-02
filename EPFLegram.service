@@ -3,9 +3,8 @@ Description=EPFLegram
 
 [Service]
 ExecStartPre=/usr/bin/docker pull epflsti/epflegram
-ExecStartPre=/bin/sh -c '/usr/bin/docker rm -f EPFLegram || true'
-ExecStratPre=/bin/sh -c 'TELETOKEN=$(/usr/bin/cat /run/power/nborboen/EPFLegram/TELEGRAM_BOT_TOKEN)'
-ExecStart=/usr/bin/docker run -e "TELEGRAM_BOT_TOKEN=$TELETOKEN" --name='EPFLegram'  epflsti/epflegram
+ExecStartPre=/usr/bin/sh -c '/usr/bin/docker rm -f EPFLegram || true'
+ExecStart=/usr/bin/sh -c 'docker run -e "TELEGRAM_BOT_TOKEN=$(cat /run/power/nborboen/EPFLegram/TELEGRAM_BOT_TOKEN)" --name=EPFLegram epflsti/epflegram'
 ExecStop=/usr/bin/docker kill EPFLegram
 
 [X-Fleet]
