@@ -32,8 +32,6 @@ function sendTimeTables(url, msg){
             console.log(result);
             var message2send = '';
             for (var i = 1; i <= 4; i++) {
-                bot.sendMessage(msg.chat.id, message2send, opts);
-
                 var nextMetro = result.connections[i - 1].from.departure;
                 message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
             }
