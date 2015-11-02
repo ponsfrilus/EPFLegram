@@ -21,7 +21,29 @@ var restaurantOpts = {
         "one_time_keyboard": true
     })
 };
+function sendTimeTables(url, msg){
+    request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var opts = {
+                reply_to_message_id: msg.message_id
+            };
 
+            var result = JSON.parse(body);
+            console.log(result);
+            var message2send = '';
+            for (var i = 1; i <= 4; i++) {
+                bot.sendMessage(msg.chat.id, message2send, opts);
+
+                var nextMetro = result.connections[i - 1].from.departure;
+                message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
+            }
+            console.log(message2send);
+            bot.sendMessage(msg.chat.id, message2send, opts);
+        } else {
+            bot.sendMessage(msg.chat.id, 'Error getting timetable', opts);
+        }
+    })
+};
 
 bot.getMe().then(function (me) {
     console.log('Hello on %s! Please have fun!', me.username);
@@ -30,29 +52,7 @@ bot.on('text', function (msg) {
     var chatId = msg.chat.id;
     var args = msg.text.split(' ');
 
-    function sendTimeTables(url, msg){
-        request(url, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var opts = {
-                    reply_to_message_id: msg.message_id
-                };
 
-                var result = JSON.parse(body);
-                console.log(result);
-                var message2send = '';
-                for (var i = 1; i <= 4; i++) {
-                    bot.sendMessage(msg.chat.id, message2send, opts);
-
-                    var nextMetro = result.connections[i - 1].from.departure;
-                    message2send += i + ': ' + moment(nextMetro).fromNow() + '\n';
-                }
-                console.log(message2send);
-                bot.sendMessage(msg.chat.id, message2send, opts);
-            } else {
-                bot.sendMessage(msg.chat.id, 'Error getting timetable', opts);
-            }
-        })
-    };
 
     switch (args[0]) {
         case '/sciper':
