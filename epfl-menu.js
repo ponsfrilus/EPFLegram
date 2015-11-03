@@ -81,7 +81,7 @@ var parser = function(url, callback) {
 };
 
 
-module.exports = function(done) {
+var getMenu = exports.getMenuAsync = function getMenu (done) {
 
     parser('http://menus.epfl.ch/cgi-bin/rssMenus', function (rss, err) {
 
@@ -90,18 +90,84 @@ module.exports = function(done) {
             return;
         }
         // console.log(rss);
-        var MyMenu = {};
+        var EPFLMenu = {};
+        //EPFLMenu.Opts = {};
+        EPFLMenu.Opts = {        
+            reply_markup: JSON.stringify({
+                keyboard: [['/menu']],
+                "one_time_keyboard": true
+            })
+        };
         rss.forEach(function (item) {
             var itemH = item.title.split(':');
             var restau = itemH[0].trim();
             var type = itemH[1].trim();
-            if (typeof MyMenu[restau] == 'undefined') {
-                MyMenu[restau] = {};
+            if (typeof EPFLMenu[restau] == 'undefined') {
+                EPFLMenu[restau] = {};
             }
-            MyMenu[restau][type] = item.description;
+            EPFLMenu[restau][type] = item.description;
         });
-        //console.log(MyMenu);
-        done(MyMenu);
+        //console.log(EPFLMenu);
+        done(EPFLMenu);
     });
 
 };
+
+var restauOpts = {
+    //reply_to_message_id: msg.message_id,
+    reply_markup: JSON.stringify({
+        keyboard: [['Parmentier', 'BC', "Atlantide", 'Corbusier', 'Vinci']],
+        "one_time_keyboard": true
+    })
+};
+var commonRestaurants = {
+    'Parmentier': 'Le Parmentier',
+    'BC': 'Cafétéria BC', 
+    'Atlantide': "L'Atlantide",
+    'Corbusier': 'Le Corbusier',
+    'Vinci': 'Le Vinci'
+};
+    
+
+function restoMenu(bot, chatId, msg, args) {
+    if (args.length == 1) {
+        bot.sendMessage(chatId, 'Name it!', restauOpts);
+    } else if (args.length > 1) {
+        console.log(msg.from.username + " ask for " + args[1]);
+        var currentRestaurant = commonRestaurants[args[1]];
+        getMenu(function (menu) {
+            var shortMenuEntry = "\n\n# " + currentRestaurant + "\n";
+            for (var plats in menu[currentRestaurant]) {
+                shortMenuEntry += "\t\t* " + plats + "\n\t\t\t\t* " + menu[currentRestaurant][plats] + "\n";
+            }
+            bot.sendMessage(chatId, shortMenuEntry, restauOpts);
+        });
+    }
+}
+
+function addRestauShortcut(Cmds, restauName) {
+    Cmds[restauName] = Cmds["/" + restauName] =function (bot, chatId, msg, args) {
+        restoMenu(bot, chatId, msg, ['', restauName]);
+    }
+}
+module.exports.chatCmds = {
+    "/menu": restoMenu,
+    "/menuAll": function (bot, chatId, msg, args) {
+        console.log(msg.from.username + " ask for " + args[0]);
+        getMenu(function (menu) {
+            for (var restaurant in menu) {
+                // All menus are too long for telegram, set a msg / restaurant
+                var shortMenuEntry = "";
+                shortMenuEntry += "\n\n# " + restaurant + "\n";
+                for (var plats in menu[restaurant]) {
+                    shortMenuEntry += "\t\t* " + plats + "\n\t\t\t\t* " + menu[restaurant][plats] + "\n";
+                }
+                bot.sendMessage(chatId, shortMenuEntry, menu.Opts);
+            }
+        });
+    }
+};
+
+Object.keys(commonRestaurants).forEach(function(shortcut) {
+    addRestauShortcut(module.exports.chatCmds, shortcut);
+});
