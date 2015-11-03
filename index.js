@@ -9,6 +9,7 @@ var merge = require("merge");
 //util = require('util'),
 
 // THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
+// console.log(process.env['HOME']);
 var token = process.env.TELEGRAM_BOT_TOKEN || 'SET_YOUR_KEY';
 var bot = new TelegramBot(token, {polling: true});
 var EPFLfuncs = {
