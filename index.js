@@ -1,35 +1,18 @@
 var TelegramBot = require('node-telegram-bot-api');
+var people = require('./epfl-people.js');
 var restau = require('./epfl-menu.js');
 var metro = require('./epfl-metro.js');
 var stream = require('stream');
+var merge = require("merge");
 var http = require("http");
 var fs = require('fs');
-var merge = require("merge");
-//debug = require("debug")("polling.js"),
-//util = require('util'),
 
-// THIS IS HOW TO GET ENV VAR i.e. THE DOCKER -e OPTIONS :)
-// console.log(process.env['HOME']);
+/* Preparing the telegram bot */
 var token = process.env.TELEGRAM_BOT_TOKEN || 'SET_YOUR_KEY';
 var bot = new TelegramBot(token, {polling: true});
-var EPFLfuncs = {
-    "/sciper": function (bot, chatId, msg, args) {
-        console.log(msg.from.username + " ask for " + args[0]);
-        if (typeof args[1] === 'undefined') {
-            bot.sendMessage(chatId, 'Please specify the sciper number, e.g. /sciper 169419');
-        }
-        var sciper = parseInt(args[1]);
-        if (isNaN(sciper) || args[1].length != 6) {
-            //debug('Please provide a valid sciper number !');
-            bot.sendMessage(chatId, 'Please specify a valid sciper number, e.g. /sciper 169419');
-        } else {
-            //debug('sciper is defined');
-            bot.sendMessage(chatId, 'Showing infos for sciper ' + sciper + ':\nNicolas Borboen\nSciper: 169419');
-        }
-    }
-};
 
-var allFuncs = merge(EPFLfuncs, metro.chatCmds, restau.chatCmds);
+/* Merging all included epfl-* file */
+var allFuncs = merge(people.chatCmds, metro.chatCmds, restau.chatCmds);
 
 bot.getMe().then(function (me) {
     console.log('Hello on %s! Please have fun!', me.username);
@@ -38,7 +21,6 @@ bot.on('text', function (msg) {
     var chatId = msg.chat.id;
     var args = msg.text.split(' ');
     
-
     msg.reply = function sendReply(msgcontent) {
         bot.sendMessage(chatId, msgcontent, {reply_to_message_id: msg.message_id});
     };

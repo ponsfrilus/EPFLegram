@@ -1,3 +1,9 @@
+/**
+* epfl-menu.js
+* 
+* Grabs rss from restauration.epfl.ch
+**/
+
 var FeedParser = require('feedparser');
 var request = require('request');
 var Iconv = require('iconv').Iconv;

@@ -1,11 +1,13 @@
+---
+title: EPFLegram
+author: Nicolas Borboën <nicolas.borboen@epfl.ch>
+date: 2015-09-23
+---
+
 <!--
-                              EPEFegram README
+                              EPFLegram README
 
-  * simple pandoc:
     pandoc -o README.pdf README.md && xpdf README.pdf
-  * pandoc with margin and section:
-    pandoc -s -V geometry:margin=1cm --number-sections -o README.pdf README.md && xpdf README.pdf
-
            _________________ _       _____ _____ ______  ___  ___  ___
           |  ___| ___ \  ___| |    _|  ___|  __ \| ___ \/ _ \ |  \/  |
           | |__ | |_/ / |_  | |   (_) |__ | |  \/| |_/ / /_\ \| .  . |
@@ -13,16 +15,13 @@
           | |___| |   | |   | |_____| |___| |_\ \| |\ \| | | || |  | |
           \____/\_|   \_|   \_____(_)____/ \____/\_| \_\_| |_/\_|  |_/
                                                               Have fun.
-
 -->
----
-title: EPFLegram
-author: Nicolas Borboën <nicolas.borboen@epfl.ch>
-date: 2015-09-23
----
 
 # EPFLegram
 A project to integrate EPFL-API with Telegram, and more. It use Node.js and [yagop's telegram bot api](https://github.com/yagop/node-telegram-bot-api).
+
+![EPFLegram Metro Demo](https://raw.githubusercontent.com/ponsfrilus/EPFLegram/master/media/EPFLegram_metro.gif "EPFLegram Metro Demo")
+
 
 ## Telegram
 Telegram Messenger is a free and secure messaging for Android and iOS smartphones. You can send messages, photos, videos and documents to people who are in your phone contacts. The Telegram messaging app is cloud-based and cross-platform app which can be accessed via any device. Telegram messages are heavily encrypted and can self-destruct. The apps uses advance encryption technique and decentralized infrastructure which makes the app as one of the fastest messaging apps available in the market.
@@ -56,17 +55,23 @@ fleetctl start EPFLegram.service
 ### OldTimer way
 `node index.js` or `npm start`
 
-## Ideas
-### Metro API
-* /metro  
-    Gives the next departure to Lausanne from EPFL
-* /leave in 20  
-    Send a notification 5 minutes before the metro who leave in around 20 minutes.
-
 ## BotFather
 * /setcommands  
   /menu - Choose between Parmentier, BC, Atlantide, Corbusier or Vinci menus  
   /menuAll - All EPFL menus  
 
 ## ToDo
-* Tests
+* [] Logs more (i.e. Metro)
+* [] Modulize EPFLFunc
+* [] Tests
+
+## Versions
+
+### 0.0.3
+Refactoring (menu, metro and people are now in seperate file). Generic menu call on behaviors. Thanks to [\@domq](https://github.com/domq)
+
+### 0.0.2
+Integration of [\@stefanonepa metro api](https://github.com/stefanonepa/nepabot) built on [transport.opendata.ch](http://transport.opendata.ch) 
+
+### 0.0.1
+First version with basics commands and tests

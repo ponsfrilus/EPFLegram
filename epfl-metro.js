@@ -1,3 +1,9 @@
+/**
+ * epfl-metro.js
+ *
+ * Grabs JSON data from transport.opendata.ch
+ **/
+
 var moment = require('moment');
 var request = require('request');
 var debug = require('debug')("epfl-metro.js");
