@@ -11,8 +11,8 @@ var debug = require('debug')("epfl-metro.js");
 var EPFLMetro = {};
 EPFLMetro.msg = '';
 
-function getMetro(url, callback){
-    debug("sendTimeTable "+url);
+function getMetro(url, callback) {
+    debug("sendTimeTable " + url);
     request(url, function (error, response, body) {
         debug("request " + url);
         if (!error && response.statusCode == 200) {
@@ -30,8 +30,7 @@ function getMetro(url, callback){
         }
         callback(EPFLMetro.msg);
     });
-};
-
+}
 var Opts = {
     reply_markup: JSON.stringify({
         keyboard: [

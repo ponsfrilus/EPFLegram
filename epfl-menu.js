@@ -1,8 +1,8 @@
 /**
-* epfl-menu.js
-* 
-* Grabs rss from restauration.epfl.ch
-**/
+ * epfl-menu.js
+ *
+ * Grabs rss from restauration.epfl.ch
+ **/
 
 var FeedParser = require('feedparser');
 var request = require('request');
@@ -10,7 +10,9 @@ var Iconv = require('iconv').Iconv;
 
 function getParams(str) {
     var params = str.split(';').reduce(function (params, param) {
-        var parts = param.split('=').map(function (part) { return part.trim(); });
+        var parts = param.split('=').map(function (part) {
+            return part.trim();
+        });
         if (parts.length === 2) {
             params[parts[0]] = parts[1];
         }
@@ -19,7 +21,7 @@ function getParams(str) {
     return params;
 }
 
-function maybeTranslate (res, charset) {
+function maybeTranslate(res, charset) {
     var iconv;
     // Use iconv if its not utf8 already.
     if (!iconv && charset && !/utf-*8/i.test(charset)) {
@@ -32,14 +34,14 @@ function maybeTranslate (res, charset) {
             // If we're using iconv, stream will be the output of iconv
             // otherwise it will remain the output of request
             res = res.pipe(iconv);
-        } catch(err) {
+        } catch (err) {
             res.emit('error', err);
         }
     }
     return res;
 }
 
-var parser = function(url, callback) {
+var parser = function (url, callback) {
     var options = {
         normalize: false,
         addmeta: true,
@@ -53,10 +55,10 @@ var parser = function(url, callback) {
     feedParser = new FeedParser([options]);
 
     /* REQUEST */
-    req.on('error', function(err) {
+    req.on('error', function (err) {
         return callback(null, err);
     });
-    req.on('response', function(res) {
+    req.on('response', function (res) {
 
         if (res.statusCode !== 200) {
             return this.emit('error', new Error('Bad status code'));
@@ -67,19 +69,19 @@ var parser = function(url, callback) {
     });
 
     /* FEEDPARSER */
-    feedParser.on('error', function(err) {
+    feedParser.on('error', function (err) {
         return callback(null, err);
     });
-    feedParser.on('readable', function() {
+    feedParser.on('readable', function () {
         var item, stream;
         stream = this;
         if (item = stream.read()) {
             return rss.push(item);
         }
     });
-    return feedParser.on('end', function() {
+    return feedParser.on('end', function () {
         if (rss.length === 0) {
-            return callback(null,'no articles');
+            return callback(null, 'no articles');
         }
         return callback(rss);
     });
@@ -87,7 +89,7 @@ var parser = function(url, callback) {
 };
 
 
-var getMenu = exports.getMenuAsync = function getMenu (done) {
+var getMenu = exports.getMenuAsync = function getMenu(done) {
 
     parser('http://menus.epfl.ch/cgi-bin/rssMenus', function (rss, err) {
 
@@ -98,7 +100,7 @@ var getMenu = exports.getMenuAsync = function getMenu (done) {
         // console.log(rss);
         var EPFLMenu = {};
         //EPFLMenu.Opts = {};
-        EPFLMenu.Opts = {        
+        EPFLMenu.Opts = {
             reply_markup: JSON.stringify({
                 keyboard: [['/menu']],
                 "one_time_keyboard": true
@@ -128,12 +130,12 @@ var restauOpts = {
 };
 var commonRestaurants = {
     'Parmentier': 'Le Parmentier',
-    'BC': 'Cafétéria BC', 
+    'BC': 'Cafétéria BC',
     'Atlantide': "L'Atlantide",
     'Corbusier': 'Le Corbusier',
     'Vinci': 'Le Vinci'
 };
-    
+
 
 function restoMenu(bot, chatId, msg, args) {
     if (args.length == 1) {
@@ -152,7 +154,7 @@ function restoMenu(bot, chatId, msg, args) {
 }
 
 function addRestauShortcut(Cmds, restauName) {
-    Cmds[restauName] = Cmds["/" + restauName] =function (bot, chatId, msg, args) {
+    Cmds[restauName] = Cmds["/" + restauName] = function (bot, chatId, msg, args) {
         restoMenu(bot, chatId, msg, ['', restauName]);
     }
 }
@@ -174,6 +176,6 @@ module.exports.chatCmds = {
     }
 };
 
-Object.keys(commonRestaurants).forEach(function(shortcut) {
+Object.keys(commonRestaurants).forEach(function (shortcut) {
     addRestauShortcut(module.exports.chatCmds, shortcut);
 });

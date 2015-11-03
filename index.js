@@ -24,7 +24,7 @@ bot.on('text', function (msg) {
     msg.reply = function sendReply(msgcontent) {
         bot.sendMessage(chatId, msgcontent, {reply_to_message_id: msg.message_id});
     };
-    
+
     var behavior = allFuncs[args[0]];
     if (behavior) {
         behavior(bot, chatId, msg, args);
