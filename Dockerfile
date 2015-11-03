@@ -7,6 +7,7 @@ MAINTAINER Nicolas Borboën <nicolas.borboen@epfl.ch>
 # Bundle app source
 COPY ./index.js /app/epflegram/index.js
 COPY ./epfl-menu.js /app/epflegram/epfl-menu.js
+COPY ./epfl-metro.js /app/epflegram/epfl-metro.js
 COPY ./package.json /app/epflegram/package.json
 
 # Install app dependencies
