@@ -10,6 +10,8 @@ COPY ./epfl-menu.js /app/epflegram/epfl-menu.js
 COPY ./epfl-metro.js /app/epflegram/epfl-metro.js
 COPY ./epfl-people.js /app/epflegram/epfl-people.js
 COPY ./package.json /app/epflegram/package.json
+# Form dummy images
+COPY media /app/epflegram/media
 
 # Install app dependencies
 RUN cd /app/epflegram; npm install
