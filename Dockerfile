@@ -1,7 +1,7 @@
 # docker build -t epflsti/epflegram .
 # docker run -e "TELEGRAM_BOT_TOKEN=xxxxxxxxxxxxx" epflsti/epflegram
 
-FROM node:4.1.1
+FROM node:5.3.0
 MAINTAINER Nicolas Borboën <nicolas.borboen@epfl.ch>
 
 # Bundle app source
