@@ -51,15 +51,19 @@ module.exports.chatCmds = {
     "/metro": metroMenu,
     "/next": metroMenu,
     'Metro_from_EPFL_to_Lausanne': function (bot, chatId, msg) {
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for Metro_from_EPFL_to_Lausanne");
         getMetro('http://transport.opendata.ch/v1/connections?from=EPFL&to=Lausanne', msg.reply);
     },
     'Metro_from_Lausanne_to_EPFL': function (bot, chatId, msg) {
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for Metro_from_Lausanne_to_EPFL");
         getMetro('http://transport.opendata.ch/v1/connections?from=Lausanne&to=EPFL', msg.reply);
     },
     'Metro_from_EPFL_to_Renens': function (bot, chatId, msg) {
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for Metro_from_EPFL_to_Renens");
         getMetro('http://transport.opendata.ch/v1/connections?from=EPFL&to=Renens', msg.reply);
     },
     'Metro_from_Renens_to_EPFL': function (bot, chatId, msg) {
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for Metro_from_Renens_to_EPFL");
         getMetro('http://transport.opendata.ch/v1/connections?from=Renens&to=EPFL', msg.reply);
     }
 };

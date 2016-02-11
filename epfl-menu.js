@@ -6,6 +6,7 @@
 
 var FeedParser = require('feedparser');
 var request = require('request');
+var moment = require('moment');
 var Iconv = require('iconv').Iconv;
 
 function getParams(str) {
@@ -139,9 +140,10 @@ var commonRestaurants = {
 
 function restoMenu(bot, chatId, msg, args) {
     if (args.length == 1) {
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
         bot.sendMessage(chatId, 'Name it!', restauOpts);
     } else if (args.length > 1) {
-        console.log(msg.from.username + " ask for " + args[1]);
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for menu in " + args[1]);
         var currentRestaurant = commonRestaurants[args[1]];
         getMenu(function (menu) {
             var shortMenuEntry = "\n\n# " + currentRestaurant + "\n";
@@ -161,7 +163,7 @@ function addRestauShortcut(Cmds, restauName) {
 module.exports.chatCmds = {
     "/menu": restoMenu,
     "/menuAll": function (bot, chatId, msg, args) {
-        console.log(msg.from.username + " ask for " + args[0]);
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
         getMenu(function (menu) {
             for (var restaurant in menu) {
                 // All menus are too long for telegram, set a msg / restaurant
