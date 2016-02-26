@@ -4,6 +4,7 @@
   "description": "A telegram bot for EPFL sevices",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install --production",
     "start": "node index.js",
     "test": "./node_modules/.bin/mocha test/index.js"
   },
