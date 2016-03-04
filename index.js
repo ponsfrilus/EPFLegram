@@ -2,6 +2,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var people = require('./epfl-people.js');
 var restau = require('./epfl-menu.js');
 var metro = require('./epfl-metro.js');
+var onetwothreefour = require('./epfl-1234.js');
 var heredoc = require('heredoc');
 var request = require('request');
 var moment = require('moment');
@@ -15,6 +16,10 @@ var token = process.env.TELEGRAM_BOT_TOKEN || 'Set your TOKEN HERE';
 
 var bot = new TelegramBot(token, {polling: true});
 /* Merging all included epfl-* file */
+var clients1234 = [];
+
+var chatId =  process.env["TARGET_GROUP_CHAT_ID"];
+
 
 var allFuncs = merge(people.chatCmds, metro.chatCmds, restau.chatCmds);
 bot.getMe().then(function (me) {
@@ -33,6 +38,13 @@ bot.getMe().then(function (me) {
     console.log(EPFLegramAscii);
     console.log('Hello on %s! Please have fun!', me.username);
 });
+
+
+function broadcastNews(news) {
+    bot.sendMessage(chatId, news);
+}
+onetwothreefour.poll(broadcastNews);
+
 bot.on('text', function (msg) {
     var chatId = msg.chat.id;
     var args = msg.text.split(' ');
@@ -46,33 +58,32 @@ bot.on('text', function (msg) {
         behavior(bot, chatId, msg, args);
     } else {
 
+        console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
         switch (args[0]) {
             case '/audio':
-                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
                 var url = 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg';
                 // From HTTP request!
                 var audio = request(url);
                 bot.sendAudio(chatId, audio);
                 break;
             case '/pic':
-                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
                 var photo = __dirname + '/media/bot.gif';
                 bot.sendPhoto(chatId, photo, {caption: "I'm a cool bot!"});
                 break;
             case '/cat':
-                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
                 bot.sendDocument(chatId, request('http://www.catgifpage.com/gifs/318.gif'), {caption: "I'm a [LOL] cat!"});
                 break;
             case '/start':
-                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
                 bot.sendMessage(chatId, 'Welcome 😎! Please have fun!\nAs starter, try the /help command...!');
+                break;
+            case '/subscribe':
+                clients1234.push(chatId);
                 break;
 
             // METRO
             case 'help':
             case '/help':
             default:
-                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
                 var usage = 'Usage:\n' +
                     '\t\t- /help This output\n' +
                     '\t\t- /menu\n' +
@@ -86,6 +97,7 @@ bot.on('text', function (msg) {
                     '\t\t- /cat\n' +
                     '\t\t- /pic\n' +
                     '\t\t- /audio\n' +
+                    '\t\t- /subscribe\n' +
                     '\t\t- /love\n\n';
                 bot.sendMessage(chatId, usage);
                 break;

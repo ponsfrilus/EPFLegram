@@ -65,6 +65,9 @@ fleetctl start EPFLegram.service
 * [] Modulize EPFLFunc
 * [] Tests
 
+## EPFL1234
+Subscribe to the bot to get alerts from http://blogs.epfl.ch/public/export?blog=1234
+
 ## Versions
 
 ### 0.0.3
