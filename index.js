@@ -43,7 +43,12 @@ bot.getMe().then(function (me) {
 function broadcastNews(news) {
     bot.sendMessage(chatId, news);
 }
-onetwothreefour.poll(broadcastNews);
+// onetwothreefour.poll(broadcastNews);
+var nombresADeviner = {};
+function choisirUnNouveauNombre(user) {
+    nombresADeviner[user] = Math.floor((Math.random() * 100) + 1);
+    console.log(nombresADeviner[user]);
+}
 
 bot.on('text', function (msg) {
     var chatId = msg.chat.id;
@@ -79,11 +84,25 @@ bot.on('text', function (msg) {
             case '/subscribe':
                 clients1234.push(chatId);
                 break;
-
+            case "/game":
+                    var user = msg.from.username;
+                    var nombreADeviner = nombresADeviner[user];
+                    var unNombre = Number(args[1]);
+                    if (unNombre > nombreADeviner) {
+                        bot.sendMessage(chatId, "Trop grand !");
+                    } else if (unNombre < nombreADeviner) {
+                        bot.sendMessage(chatId, "Trop petit");
+                    } else if (unNombre === nombreADeviner) {
+                        bot.sendMessage(chatId, "Bravo "+user+" ! Gagné ! J'en prepare un autre pour toi ...");
+                        choisirUnNouveauNombre(user);
+                    } else {
+                        bot.sendMessage(chatId, "Bienvenue dans notre petit jeu ! Choisissez un nombre...");
+                        choisirUnNouveauNombre(user);
+                    }
+                break;
             // METRO
             case 'help':
             case '/help':
-            default:
                 var usage = 'Usage:\n' +
                     '\t\t- /help This output\n' +
                     '\t\t- /menu\n' +
@@ -115,6 +134,18 @@ bot.on('text', function (msg) {
             download('http://people.epfl.ch/cgi-bin/people/getPhoto?id=169419', '169419.jpg', function () {
                 console.log('done');
             });
+        }
+        if (msg.text == '/imc') {
+            console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
+            bot.sendMessage(chatId, "What's weight ?");
+
+        } else if (msg.text.startsWith("/imc ")) {
+            var elements = msg.text.split(" ");
+            var weight = Number(elements[1]);
+            var height = Number(elements[2]);
+            var age = Number(elements[3]);
+            var imc = weight/Math.pow(height/100, 2);    // XXXXXXXXXXXX TODOFIXIT !!11!1!
+            bot.sendMessage(chatId, "Your IMC is " + imc);
         }
     }
 });
