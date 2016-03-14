@@ -88,15 +88,19 @@ bot.on('text', function (msg) {
                     var user = msg.from.username;
                     var nombreADeviner = nombresADeviner[user];
                     var unNombre = Number(args[1]);
+                function reply(msg) {
+                    bot.sendMessage(chatId, "@" + user + ": " + msg);
+
+                }
                     if (unNombre > nombreADeviner) {
-                        bot.sendMessage(chatId, "Trop grand !");
+                        reply("Trop grand !");
                     } else if (unNombre < nombreADeviner) {
-                        bot.sendMessage(chatId, "Trop petit");
+                        reply("Trop petit");
                     } else if (unNombre === nombreADeviner) {
-                        bot.sendMessage(chatId, "Bravo "+user+" ! Gagné ! J'en prepare un autre pour toi ...");
+                        reply("Bravo "+user+" ! Gagné ! J'en prepare un autre pour toi ...");
                         choisirUnNouveauNombre(user);
                     } else {
-                        bot.sendMessage(chatId, "Bienvenue dans notre petit jeu ! Choisissez un nombre...");
+                        reply("Bienvenue dans notre petit jeu ! Choisissez un nombre...");
                         choisirUnNouveauNombre(user);
                     }
                 break;
