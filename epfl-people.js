@@ -20,6 +20,8 @@ module.exports.chatCmds = {
             bot.sendMessage(chatId, 'Please specify the sciper number, e.g. /sciper 169419');
         }
         var sciper = parseInt(args[1]);
+        var pplName = '';
+        var pplPhone = '';
         if (isNaN(sciper) || args[1].length != 6) {
             //debug('Please provide a valid sciper number !');
             bot.sendMessage(chatId, 'Please specify a valid sciper number, e.g. /sciper 169419');
@@ -29,11 +31,11 @@ module.exports.chatCmds = {
             }, function(error, response, body) {
                 var $ = cheerio.load(body);
                 $(".presentation > h4").each(function() {
-                    var pplName = $(this).text();
+                    pplName = $(this).text();
                     console.log(pplName);
                 });
                 $(".local-color-text").each(function() {
-                    var pplPhone = $(this).text();
+                    pplPhone = $(this).text();
                     console.log(pplPhone);
                 });
 
