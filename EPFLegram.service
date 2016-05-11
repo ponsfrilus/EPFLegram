@@ -2,6 +2,7 @@
 Description=EPFLegram
 
 [Service]
+TimeoutStartSec=10m
 ExecStartPre=/usr/bin/docker pull epflsti/epflegram
 ExecStartPre=/usr/bin/sh -c '/usr/bin/docker rm -f EPFLegram || true'
 ExecStart=/usr/bin/sh -c 'docker run -e "TELEGRAM_BOT_TOKEN=$(cat /run/power/nborboen/EPFLegram/TELEGRAM_BOT_TOKEN)" --name=EPFLegram epflsti/epflegram'
