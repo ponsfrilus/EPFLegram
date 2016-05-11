@@ -70,8 +70,8 @@ bot.on('text', function (msg) {
 
             case 'love':
             case '/love':
-		console.lo(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
-		bot.senMessage(chatId, 'ponsbot ❤️ ' + msg.from.username);
+                console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
+                bot.senMessage(chatId, 'ponsbot ❤️ ' + msg.from.username);
                 break;
             case 'help':
             case '/help':
