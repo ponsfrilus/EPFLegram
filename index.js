@@ -68,7 +68,11 @@ bot.on('text', function (msg) {
                 bot.sendMessage(chatId, 'Welcome 😎! Please have fun!\nAs starter, try the /help command...!');
                 break;
 
-            // METRO
+            case 'love':
+            case '/love':
+		console.lo(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]);
+		bot.senMessage(chatId, 'ponsbot ❤️ ' + msg.from.username);
+                break;
             case 'help':
             case '/help':
             default:

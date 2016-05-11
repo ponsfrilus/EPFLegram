@@ -4,6 +4,10 @@
 FROM node:5.3.0
 MAINTAINER Nicolas Borboën <nicolas.borboen@epfl.ch>
 
+# Swagg for test
+COPY ./media/bot.gif /app/epflegram//media/bot.gif
+COPY ./media/cat.gif /app/epflegram//media/cat.gif
+
 # Bundle app source
 COPY ./index.js /app/epflegram/index.js
 COPY ./epfl-menu.js /app/epflegram/epfl-menu.js
