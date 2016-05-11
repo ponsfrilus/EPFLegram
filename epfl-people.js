@@ -40,13 +40,13 @@ module.exports.chatCmds = {
                 });
 
                 if (pplPhone != '' && pplName != '') {
-                    return console.log(pplPhone + "" + pplName);
+                    console.log(pplPhone + "" + pplName);
+                    return bot.sendMessage(chatId, 'WORK IN PROGRESS..... \nShowing infos for sciper ' + sciper + ':\nName: ' + pplName + '\nSciper: ' + sciper + '\nPhone: ' + pplPhone);
                 }
 
             });
 
             console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]+ " " + args[1]);
-            bot.sendMessage(chatId, 'WORK IN PROGRESS..... \nShowing infos for sciper ' + sciper + ':\n' + pplName + '\nSciper: ' + sciper + '\nPhone: ' + pplPhone);
 
         }
     },
