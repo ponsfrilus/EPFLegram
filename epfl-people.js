@@ -39,6 +39,10 @@ module.exports.chatCmds = {
                     console.log(pplPhone);
                 });
 
+                if (pplPhone != '' && pplName != '') {
+                    return console.log(pplPhone + "" + pplName);
+                }
+
             });
 
             console.log(moment().format('YYYY-MM-DD hh:mm:ss') + " " + msg.from.username + " ask for " + args[0]+ " " + args[1]);
